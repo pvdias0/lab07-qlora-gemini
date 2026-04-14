@@ -7,6 +7,12 @@ __pycache__/
 data/raw/
 outputs/
 checkpoints/
+artifacts/adapter-colab/checkpoint-*/
+artifacts/adapter-colab/**/optimizer.pt
+artifacts/adapter-colab/**/scheduler.pt
+artifacts/adapter-colab/**/rng_state.pth
+artifacts/adapter-colab/**/trainer_state.json
+artifacts/adapter-colab/**/training_args.bin
 wandb/
 .idea/
 .vscode/
