@@ -1,0 +1,12 @@
+.venv/
+__pycache__/
+*.pyc
+.env
+.ipynb_checkpoints/
+*.zip
+data/raw/
+outputs/
+checkpoints/
+wandb/
+.idea/
+.vscode/
