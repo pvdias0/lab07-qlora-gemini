@@ -65,10 +65,13 @@ def main() -> None:
             "Instale um build CUDA do torch antes de executar o treino."
         )
 
+    use_bf16 = torch.cuda.is_bf16_supported()
+    compute_dtype = torch.bfloat16 if use_bf16 else torch.float16
+
     quant_config = BitsAndBytesConfig(
         load_in_4bit=True,
         bnb_4bit_quant_type="nf4",
-        bnb_4bit_compute_dtype=torch.float16,
+        bnb_4bit_compute_dtype=compute_dtype,
         bnb_4bit_use_double_quant=True,
     )
 
@@ -80,6 +83,7 @@ def main() -> None:
     model = AutoModelForCausalLM.from_pretrained(
         args.base_model,
         quantization_config=quant_config,
+        torch_dtype=compute_dtype,
         device_map="auto",
         trust_remote_code=False,
     )
@@ -106,7 +110,8 @@ def main() -> None:
         optim="paged_adamw_32bit",
         lr_scheduler_type="cosine",
         warmup_ratio=0.03,
-        fp16=True,
+        fp16=not use_bf16,
+        bf16=use_bf16,
         report_to="none",
         eval_strategy="epoch",
         save_strategy="epoch",
